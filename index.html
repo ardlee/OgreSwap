@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>One-Button</title>
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height,
+    user-scalable=no, initial-scale=1, maximum-scale=1"
+    />
+    <script src="https://unpkg.com/sounds-some-sounds@3.0.0/build/index.js"></script>
+    <script src="https://unpkg.com/gif-capture-canvas@1.1.0/build/index.js"></script>
+    <script src="https://unpkg.com/pixi.js@5.3.0/dist/pixi.min.js"></script>
+    <script src="https://unpkg.com/pixi-filters@3.1.1/dist/pixi-filters.js"></script>
+    <script src="https://unpkg.com/crisp-game-lib@1.1.1/docs/bundle.js"></script>
+
+<script>
+title = "One Button";
+
+description = `Use one button
+`;
+
+characters = [
+`
+g   g
+ ggg
+ggggg
+glglg
+ggggg
+ grg
+`
+,
+`
+ g
+lll
+lll
+`
+,
+`
+ LLL
+LlLlL
+ LRL 
+LlLlL
+`
+
+];
+
+const G = {
+	WIDTH: 100,
+	HEIGHT: 150,
+};
+
+options = {
+  theme: "dark",
+  isPlayingBgm: true,
+  isReplayEnabled: true,
+};
+
+let player;
+let playerPos;
+let enemy;
+let temp;
+const size = 3;
+
+let turn;
+
+
+function update() {
+  if (!ticks) {
+//x AXIS IS -0.1 TO 1
+//Y AXIS IS  0.1 TO 0.6
+    player = {
+            pos: vec(G.WIDTH * 0.1, G.HEIGHT * 0.5),
+            vel: vec().addWithAngle(PI / 4, size),
+            speed: 1,
+    }
+    playerPos = vec();
+
+    onion = {
+            pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.1)
+    }
+    enemy = {
+            pos: vec(G.WIDTH * 0.6, G.HEIGHT * 0.6),
+            vel: 0,
+    }
+    temp={
+            pos: vec(G.WIDTH *5, G.HEIGHT *5)
+    }
+    temp2={
+            pos: vec(G.WIDTH *5, G.HEIGHT *5)
+    }
+    
+  }
+  // player.pos = vec(input.pos.x, input.pos.y);
+  player.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  color("black");
+  char("a", player.pos);
+
+  onion.pos = vec(onion.pos.x, onion.pos.y);
+  onion.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  char("b",onion.pos);
+
+  // enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
+  if( enemy.vel === 0){
+    moveEnemy();
+  }
+  if( enemy.vel ===1){
+    moveEnemyOpposite();
+  }
+  if( enemy.pos.x > 1){
+    enemy.vel --;
+  }
+
+  enemy.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  char("c",enemy.pos);
+
+  temp.pos = vec(temp.pos.x, temp.pos.y);
+  temp2.pos = vec(temp.pos.x, temp.pos.y);
+
+  //if player touches onion, addscore
+  const isEat = char("a", player.pos).isColliding.char.b;
+    if (isEat) {
+        addScore(5, player.pos.x, player.pos.y);
+        play("powerUp");
+    }
+  
+  //if player touches enemy game over
+  const isHit = char("a", player.pos).isColliding.char.c;
+    if (isHit){
+      play("explosion");
+      end()
+    }
+
+  //check if mouse is within 2 units of enemy
+  const difference1 = Math.abs(input.pos.x - enemy.pos.x);
+  const difference2 = Math.abs(input.pos.y - enemy.pos.y)
+    //if mouse is clicked on enemy swap places with it
+    if(input.isJustPressed && (difference1 <=2 )&& difference2 <=2){
+      temp.pos = player.pos;
+      player.pos = temp2.pos;
+      temp2.pos = enemy.pos;
+      enemy.pos = temp.pos;
+      player.pos = temp2.pos;
+      //temp to hold positions
+      play("laser");
+    }
+
+    //check if mouse is within 2 units of onion
+  const difference3 = Math.abs(input.pos.x - onion.pos.x);
+  const difference4 = Math.abs(input.pos.y - onion.pos.y)
+    //if mouse is clicked on onion swap places with it
+    if(input.isJustPressed && (difference3 <=2 )&& difference4 <=1){
+      temp.pos = player.pos;
+      player.pos = temp2.pos;
+      temp2.pos = onion.pos
+      onion.pos = temp.pos;
+      player.pos = temp2.pos;
+      //temp to hold positions
+      play("laser");
+    }
+
+    function moveEnemy(){
+      enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
+    }
+    
+    if( enemy.pos.x <=1 ){
+        enemy.vel ++;
+    }
+    function moveEnemyOpposite(){
+      enemy.pos = vec(enemy.pos.x+0.5, enemy.pos.y+0.5);
+    }
+    
+}
+
+addEventListener("load", onLoad);
+</script>
+
+  </head>
+  <body style="background: #eb5757"></body>
+</html>

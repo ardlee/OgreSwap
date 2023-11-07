@@ -15,9 +15,11 @@
     <script src="https://unpkg.com/crisp-game-lib@1.1.1/docs/bundle.js"></script>
 
 <script>
-title = "One Button";
+title = "Ogre Swap";
 
-description = `Use one button
+description = ` Tap to swap
+
+protect the ogre
 `;
 
 characters = [
@@ -42,7 +44,13 @@ LlLlL
  LRL 
 LlLlL
 `
-
+,
+`
+ LLL
+LlLlL
+ LRL 
+LlLlL
+`
 ];
 
 const G = {
@@ -51,7 +59,7 @@ const G = {
 };
 
 options = {
-  theme: "dark",
+  theme: "shapeDark",
   isPlayingBgm: true,
   isReplayEnabled: true,
 };
@@ -60,19 +68,42 @@ let player;
 let playerPos;
 let enemy;
 let temp;
-const size = 3;
 
-let turn;
+
+let x = Math.random() * (G.WIDTH-3);
+let y = Math.random() * (G.HEIGHT-3);
+let dx = Math.random() > 0.5 ? 1 : -1; // Random initial direction for dx (1 or -1)
+let dy = Math.random() > 0.5 ? 1 : -1; // Random initial direction for dy (1 or -1)
+
+
+let ex = Math.random() * (G.WIDTH-3);
+let ey = Math.random() * (G.HEIGHT-3);
+let edx = 0.7;
+let edy = 0.7;
+
+let e2x = Math.random() * (G.WIDTH-3);
+let e2y = Math.random() * (G.HEIGHT-3);
+let e2dx = 0.7;
+let e2dy = 0.7;
+
+let ox = Math.random() * (G.WIDTH-3);
+let oy = Math.random() * (G.HEIGHT-3);
+let odx = 0.7;
+let ody = 0.7;
+
+// let dir = Math.floor(Math.random() * 2) + 1;;
+// let rand;
 
 
 function update() {
   if (!ticks) {
 //x AXIS IS -0.1 TO 1
-//Y AXIS IS  0.1 TO 0.6
+//Y AXIS IS  1 TO 98
     player = {
             pos: vec(G.WIDTH * 0.1, G.HEIGHT * 0.5),
-            vel: vec().addWithAngle(PI / 4, size),
-            speed: 1,
+            x: 0,
+            y: 0,
+    
     }
     playerPos = vec();
 
@@ -81,7 +112,12 @@ function update() {
     }
     enemy = {
             pos: vec(G.WIDTH * 0.6, G.HEIGHT * 0.6),
-            vel: 0,
+            x: 0,
+            y: 0,
+    }
+
+    enemy2 = {
+            pos: vec(G.WIDTH * 0.9, G.HEIGHT * 0.2),
     }
     temp={
             pos: vec(G.WIDTH *5, G.HEIGHT *5)
@@ -100,19 +136,94 @@ function update() {
   onion.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   char("b",onion.pos);
 
-  // enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
-  if( enemy.vel === 0){
-    moveEnemy();
-  }
-  if( enemy.vel ===1){
-    moveEnemyOpposite();
-  }
-  if( enemy.pos.x > 1){
-    enemy.vel --;
-  }
-
   enemy.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   char("c",enemy.pos);
+
+  enemy2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  char("d",enemy2.pos);
+
+  if (player.pos.x + dx > G.WIDTH-3 || player.pos.x + dx < 0) {
+        dx = -dx;
+    }
+
+  if (player.pos.y + dy > G.HEIGHT-50 || player.pos.y + dy < 0) {
+      dy = -dy;
+  }
+
+  player.pos.x += dx;
+  player.pos.y += dy;
+
+  if (enemy.pos.x + edx > G.WIDTH-3 || enemy.pos.x + edx < 0) {
+        edx = -edx;
+    }
+
+  if (enemy.pos.y + edy > G.HEIGHT-50 || enemy.pos.y + edy < 0) {
+      edy = -edy;
+  }
+
+  enemy.pos.x += edx;
+  enemy.pos.y += edy;
+
+  if (enemy2.pos.x + e2dx > G.WIDTH-3 || enemy2.pos.x + e2dx < 0) {
+        e2dx = -e2dx;
+    }
+
+  if (enemy2.pos.y + e2dy > G.HEIGHT-50 || enemy2.pos.y + e2dy < 0) {
+      e2dy = -e2dy;
+  }
+
+  enemy2.pos.x += e2dx;
+  enemy2.pos.y += e2dy;
+
+  if (onion.pos.x + odx > G.WIDTH-3 || onion.pos.x + odx < 0) {
+        odx = -odx;
+  }
+
+  if (onion.pos.y + ody > G.HEIGHT-50 ||onion.pos.y + ody < 0) {
+      ody = -ody;
+  }
+
+  onion.pos.x += odx;
+  onion.pos.y += ody;
+  
+  // enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
+  // if ( dir === 1){
+  //   rand = 1;
+  // }
+  // else{
+  //   rand = -1;
+  // }
+  // if( enemy.x === 0){
+  //   moveEnemyLeft();
+  // }
+
+  // if( enemy.pos.x <=1 ){
+  //       enemy.x ++;
+  //   }
+
+  // if( enemy.x ===1){
+  //   moveEnemyRight();
+  // }
+
+  // if( enemy.pos.x > 98){
+  //   enemy.x --;
+  // }
+
+  // if( enemy.y === 0){
+  //   moveEnemyUp();
+  // }
+  // if (enemy.pos.y >= 97 ){
+  //   enemy.y --;
+  // }
+
+  // if ( enemy.y ===1){
+  //   moveEnemyDown();
+  // }
+  // if( enemy.pos.y <= 3){
+  //   enemy.y ++;
+  // }
+
+
 
   temp.pos = vec(temp.pos.x, temp.pos.y);
   temp2.pos = vec(temp.pos.x, temp.pos.y);
@@ -130,12 +241,17 @@ function update() {
       play("explosion");
       end()
     }
+  const isHit2 = char("a", player.pos).isColliding.char.d;
+    if (isHit2){
+      play("explosion");
+      end()
+    } 
 
   //check if mouse is within 2 units of enemy
   const difference1 = Math.abs(input.pos.x - enemy.pos.x);
   const difference2 = Math.abs(input.pos.y - enemy.pos.y)
     //if mouse is clicked on enemy swap places with it
-    if(input.isJustPressed && (difference1 <=2 )&& difference2 <=2){
+    if(input.isJustPressed && (difference1 <=4 )&& difference2 <=4){
       temp.pos = player.pos;
       player.pos = temp2.pos;
       temp2.pos = enemy.pos;
@@ -145,11 +261,24 @@ function update() {
       play("laser");
     }
 
+  const difference5 = Math.abs(input.pos.x - enemy2.pos.x);
+  const difference6 = Math.abs(input.pos.y - enemy2.pos.y)
+    //if mouse is clicked on enemy swap places with it
+    if(input.isJustPressed && (difference5 <=4 )&& difference6 <=4){
+      temp.pos = player.pos;
+      player.pos = temp2.pos;
+      temp2.pos = enemy2.pos;
+      enemy2.pos = temp.pos;
+      player.pos = temp2.pos;
+      //temp to hold positions
+      play("laser");
+    }
+
     //check if mouse is within 2 units of onion
   const difference3 = Math.abs(input.pos.x - onion.pos.x);
   const difference4 = Math.abs(input.pos.y - onion.pos.y)
     //if mouse is clicked on onion swap places with it
-    if(input.isJustPressed && (difference3 <=2 )&& difference4 <=1){
+    if(input.isJustPressed && (difference3 <=3 )&& difference4 <=3){
       temp.pos = player.pos;
       player.pos = temp2.pos;
       temp2.pos = onion.pos
@@ -159,16 +288,21 @@ function update() {
       play("laser");
     }
 
-    function moveEnemy(){
-      enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
-    }
-    
-    if( enemy.pos.x <=1 ){
-        enemy.vel ++;
-    }
-    function moveEnemyOpposite(){
-      enemy.pos = vec(enemy.pos.x+0.5, enemy.pos.y+0.5);
-    }
+    // function moveEnemyLeft(){
+    //   enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y);
+    // }
+
+    // function moveEnemyRight(){
+    //   enemy.pos = vec(enemy.pos.x+0.5, enemy.pos.y);
+    // }
+    // function moveEnemyUp(){
+    //   enemy.pos = vec(enemy.pos.x,enemy.pos.y-0.5);
+    // }
+    // function moveEnemyDown(){
+    //   enemy.pos = vec(enemy.pos.x,enemy.pos.y+0.5);
+    // }
+
+  
     
 }
 

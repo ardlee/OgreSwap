@@ -155,10 +155,14 @@ function update() {
 
   if (player.pos.x + dx > G.WIDTH-3 || player.pos.x + dx < 0) {
         dx = -dx;
+        color("green");
+        particle(player.pos);
     }
 
   if (player.pos.y + dy > G.HEIGHT-3 || player.pos.y + dy < 0) {
       dy = -dy;
+      color("green");
+      particle(player.pos);
   }
 
   player.pos.x += dx;
@@ -166,10 +170,14 @@ function update() {
 
   if (enemy.pos.x + edx > G.WIDTH-3 || enemy.pos.x + edx < 0) {
         edx = -edx;
+        color("purple");
+        particle(enemy.pos);
     }
 
   if (enemy.pos.y + edy > G.HEIGHT-3 || enemy.pos.y + edy < 0) {
       edy = -edy;
+      color("purple");
+      particle(enemy.pos);
   }
 
   enemy.pos.x += edx;
@@ -177,10 +185,14 @@ function update() {
 
   if (enemy2.pos.x + e2dx > G.WIDTH-3 || enemy2.pos.x + e2dx < 0) {
         e2dx = -e2dx;
+        color("purple");
+        particle(enemy2.pos);
     }
 
   if (enemy2.pos.y + e2dy > G.HEIGHT-3 || enemy2.pos.y + e2dy < 0) {
       e2dy = -e2dy;
+      color("purple");
+      particle(enemy2.pos);
   }
 
   enemy2.pos.x += e2dx;
@@ -188,10 +200,14 @@ function update() {
 
   if (onion.pos.x + odx > G.WIDTH-3 || onion.pos.x + odx < 0) {
         odx = -odx;
+        color("blue");
+        particle(onion.pos);
   }
 
   if (onion.pos.y + ody > G.HEIGHT-3 ||onion.pos.y + ody < 0) {
       ody = -ody;
+      color("blue");
+      particle(onion.pos);
   }
 
   onion.pos.x += odx;
@@ -246,6 +262,7 @@ function update() {
         play("powerUp");
         color("red");
         particle(player.pos);
+        
         // Generate particles
     }
   
@@ -265,7 +282,7 @@ function update() {
   const difference1 = Math.abs(input.pos.x - enemy.pos.x);
   const difference2 = Math.abs(input.pos.y - enemy.pos.y)
     //if mouse is clicked on enemy swap places with it
-    if(input.isJustPressed && (difference1 <=4 )&& difference2 <=4){
+    if(input.isJustPressed && (difference1 <=6 )&& difference2 <=6){
       color("yellow");
       particle(player.pos);
       temp.pos = player.pos;
@@ -276,12 +293,13 @@ function update() {
       //temp to hold positions
       play("laser");
       color("yellow");
+      particle(enemy.pos);
     }
 
   const difference5 = Math.abs(input.pos.x - enemy2.pos.x);
   const difference6 = Math.abs(input.pos.y - enemy2.pos.y)
     //if mouse is clicked on enemy swap places with it
-    if(input.isJustPressed && (difference5 <=4 )&& difference6 <=4){
+    if(input.isJustPressed && (difference5 <=6 )&& difference6 <=6){
       color("yellow");
       particle(player.pos);
       temp.pos = player.pos;
@@ -291,13 +309,15 @@ function update() {
       player.pos = temp2.pos;
       //temp to hold positions
       play("laser");
+      color("yellow");
+      particle(enemy2.pos);
     }
 
     //check if mouse is within 2 units of onion
   const difference3 = Math.abs(input.pos.x - onion.pos.x);
   const difference4 = Math.abs(input.pos.y - onion.pos.y)
     //if mouse is clicked on onion swap places with it
-    if(input.isJustPressed && (difference3 <=3 )&& difference4 <=3){    
+    if(input.isJustPressed && (difference3 <=5 )&& difference4 <=5){    
       color("yellow");
       particle(player.pos);  
       temp.pos = player.pos;
@@ -307,6 +327,8 @@ function update() {
       player.pos = temp2.pos;
       //temp to hold positions
       play("laser");
+      color("yellow");
+      particle(onion.pos);
     }
 
     // function moveEnemyLeft(){

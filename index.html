@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>One-Button</title>
+    <title>OgreSwap</title>
     <meta
       name="viewport"
       content="width=device-width, height=device-height,
@@ -59,6 +59,7 @@ const G = {
 };
 
 options = {
+  viewSize: {x: G.WIDTH, y: G.HEIGHT},
   theme: "shapeDark",
   isPlayingBgm: true,
   isReplayEnabled: true,
@@ -111,7 +112,7 @@ function update() {
             pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.1)
     }
     enemy = {
-            pos: vec(G.WIDTH * 0.6, G.HEIGHT * 0.6),
+            pos: vec(G.WIDTH * 0.2, G.HEIGHT * 0.1),
             x: 0,
             y: 0,
     }
@@ -125,6 +126,16 @@ function update() {
     temp2={
             pos: vec(G.WIDTH *5, G.HEIGHT *5)
     }
+    color("green");
+        // Generate particles
+        particle(
+            player.pos.x, // x coordinate
+            player.pos.y, // y coordinate
+            4, // The number of particles
+            1, // The speed of the particles
+            -PI/2, // The emitting angle
+            PI/4  // The emitting width
+        );
     
   }
   // player.pos = vec(input.pos.x, input.pos.y);
@@ -146,7 +157,7 @@ function update() {
         dx = -dx;
     }
 
-  if (player.pos.y + dy > G.HEIGHT-50 || player.pos.y + dy < 0) {
+  if (player.pos.y + dy > G.HEIGHT-3 || player.pos.y + dy < 0) {
       dy = -dy;
   }
 
@@ -157,7 +168,7 @@ function update() {
         edx = -edx;
     }
 
-  if (enemy.pos.y + edy > G.HEIGHT-50 || enemy.pos.y + edy < 0) {
+  if (enemy.pos.y + edy > G.HEIGHT-3 || enemy.pos.y + edy < 0) {
       edy = -edy;
   }
 
@@ -168,7 +179,7 @@ function update() {
         e2dx = -e2dx;
     }
 
-  if (enemy2.pos.y + e2dy > G.HEIGHT-50 || enemy2.pos.y + e2dy < 0) {
+  if (enemy2.pos.y + e2dy > G.HEIGHT-3 || enemy2.pos.y + e2dy < 0) {
       e2dy = -e2dy;
   }
 
@@ -179,7 +190,7 @@ function update() {
         odx = -odx;
   }
 
-  if (onion.pos.y + ody > G.HEIGHT-50 ||onion.pos.y + ody < 0) {
+  if (onion.pos.y + ody > G.HEIGHT-3 ||onion.pos.y + ody < 0) {
       ody = -ody;
   }
 
@@ -233,6 +244,9 @@ function update() {
     if (isEat) {
         addScore(5, player.pos.x, player.pos.y);
         play("powerUp");
+        color("red");
+        particle(player.pos);
+        // Generate particles
     }
   
   //if player touches enemy game over
@@ -252,6 +266,8 @@ function update() {
   const difference2 = Math.abs(input.pos.y - enemy.pos.y)
     //if mouse is clicked on enemy swap places with it
     if(input.isJustPressed && (difference1 <=4 )&& difference2 <=4){
+      color("yellow");
+      particle(player.pos);
       temp.pos = player.pos;
       player.pos = temp2.pos;
       temp2.pos = enemy.pos;
@@ -259,12 +275,15 @@ function update() {
       player.pos = temp2.pos;
       //temp to hold positions
       play("laser");
+      color("yellow");
     }
 
   const difference5 = Math.abs(input.pos.x - enemy2.pos.x);
   const difference6 = Math.abs(input.pos.y - enemy2.pos.y)
     //if mouse is clicked on enemy swap places with it
     if(input.isJustPressed && (difference5 <=4 )&& difference6 <=4){
+      color("yellow");
+      particle(player.pos);
       temp.pos = player.pos;
       player.pos = temp2.pos;
       temp2.pos = enemy2.pos;
@@ -278,7 +297,9 @@ function update() {
   const difference3 = Math.abs(input.pos.x - onion.pos.x);
   const difference4 = Math.abs(input.pos.y - onion.pos.y)
     //if mouse is clicked on onion swap places with it
-    if(input.isJustPressed && (difference3 <=3 )&& difference4 <=3){
+    if(input.isJustPressed && (difference3 <=3 )&& difference4 <=3){    
+      color("yellow");
+      particle(player.pos);  
       temp.pos = player.pos;
       player.pos = temp2.pos;
       temp2.pos = onion.pos

@@ -39,17 +39,31 @@ lll
 `
 ,
 `
- LLL
-LlLlL
- LRL 
-LlLlL
+ ppp
+plplp
+ prp
+prprp
 `
 ,
 `
- LLL
-LlLlL
- LRL 
-LlLlL
+ ppp
+plplp
+ prp
+prprp
+`
+
+,
+`
+ g
+lll
+lll
+`
+,
+`
+ ppp
+plplp
+ prp
+prprp
 `
 ];
 
@@ -87,39 +101,51 @@ let e2y = Math.random() * (G.HEIGHT-3);
 let e2dx = 0.7;
 let e2dy = 0.7;
 
+let e3x = Math.random() * (G.WIDTH-3);
+let e3y = Math.random() * (G.HEIGHT-3);
+let e3dx = 0.7;
+let e3dy = 0.7;
+
 let ox = Math.random() * (G.WIDTH-3);
 let oy = Math.random() * (G.HEIGHT-3);
 let odx = 0.7;
 let ody = 0.7;
 
-// let dir = Math.floor(Math.random() * 2) + 1;;
-// let rand;
+let o2x = Math.random() * (G.WIDTH-3);
+let o2y = Math.random() * (G.HEIGHT-3);
+let o2dx = 0.7;
+let o2dy = 0.7;
 
 
 function update() {
   if (!ticks) {
-//x AXIS IS -0.1 TO 1
-//Y AXIS IS  1 TO 98
+
     player = {
             pos: vec(G.WIDTH * 0.1, G.HEIGHT * 0.5),
-            x: 0,
-            y: 0,
-    
     }
     playerPos = vec();
 
     onion = {
             pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.1)
     }
+
+    onion2 = {
+            pos: vec(G.WIDTH * 0.2, G.HEIGHT * 0.6)
+    }
+
     enemy = {
             pos: vec(G.WIDTH * 0.2, G.HEIGHT * 0.1),
-            x: 0,
-            y: 0,
+
     }
 
     enemy2 = {
             pos: vec(G.WIDTH * 0.9, G.HEIGHT * 0.2),
     }
+
+    enemy3 = {
+            pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.8),
+    }
+
     temp={
             pos: vec(G.WIDTH *5, G.HEIGHT *5)
     }
@@ -138,6 +164,8 @@ function update() {
         );
     
   }
+
+  addScore(1);
   // player.pos = vec(input.pos.x, input.pos.y);
   player.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   color("black");
@@ -147,11 +175,21 @@ function update() {
   onion.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   char("b",onion.pos);
 
+  onion2.pos = vec(onion2.pos.x, onion2.pos.y);
+  onion2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  char("e",onion2.pos);
+
   enemy.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   char("c",enemy.pos);
 
   enemy2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
   char("d",enemy2.pos);
+
+  enemy3.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+  char("f",enemy3.pos);
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//MOVEMENT
 
   if (player.pos.x + dx > G.WIDTH-3 || player.pos.x + dx < 0) {
         dx = -dx;
@@ -198,6 +236,21 @@ function update() {
   enemy2.pos.x += e2dx;
   enemy2.pos.y += e2dy;
 
+  if (enemy3.pos.x + e3dx > G.WIDTH-3 || enemy3.pos.x + e3dx < 0) {
+        e3dx = -e3dx;
+        color("purple");
+        particle(enemy2.pos);
+    }
+
+  if (enemy3.pos.y + e3dy > G.HEIGHT-3 || enemy3.pos.y + e3dy < 0) {
+      e3dy = -e3dy;
+      color("purple");
+      particle(enemy3.pos);
+  }
+
+  enemy3.pos.x += e3dx;
+  enemy3.pos.y += e3dy;
+
   if (onion.pos.x + odx > G.WIDTH-3 || onion.pos.x + odx < 0) {
         odx = -odx;
         color("blue");
@@ -212,53 +265,45 @@ function update() {
 
   onion.pos.x += odx;
   onion.pos.y += ody;
-  
-  // enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y-0.5);
-  // if ( dir === 1){
-  //   rand = 1;
-  // }
-  // else{
-  //   rand = -1;
-  // }
-  // if( enemy.x === 0){
-  //   moveEnemyLeft();
-  // }
 
-  // if( enemy.pos.x <=1 ){
-  //       enemy.x ++;
-  //   }
+  if (onion2.pos.x + o2dx > G.WIDTH-3 || onion2.pos.x + o2dx < 0) {
+        o2dx = -o2dx;
+        color("blue");
+        particle(onion2.pos);
+  }
 
-  // if( enemy.x ===1){
-  //   moveEnemyRight();
-  // }
+  if (onion2.pos.y + o2dy > G.HEIGHT-3 ||onion2.pos.y + o2dy < 0) {
+      o2dy = -o2dy;
+      color("blue");
+      particle(onion2.pos);
+  }
 
-  // if( enemy.pos.x > 98){
-  //   enemy.x --;
-  // }
-
-  // if( enemy.y === 0){
-  //   moveEnemyUp();
-  // }
-  // if (enemy.pos.y >= 97 ){
-  //   enemy.y --;
-  // }
-
-  // if ( enemy.y ===1){
-  //   moveEnemyDown();
-  // }
-  // if( enemy.pos.y <= 3){
-  //   enemy.y ++;
-  // }
-
+  onion2.pos.x += o2dx;
+  onion2.pos.y += o2dy;
 
 
   temp.pos = vec(temp.pos.x, temp.pos.y);
   temp2.pos = vec(temp.pos.x, temp.pos.y);
+  temp.pos = vec(temp.pos.x, temp.pos.y);
+  temp2.pos = vec(temp.pos.x, temp.pos.y);
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//COLLISION
   //if player touches onion, addscore
   const isEat = char("a", player.pos).isColliding.char.b;
     if (isEat) {
-        addScore(5, player.pos.x, player.pos.y);
+        addScore(50, player.pos.x, player.pos.y);
+        play("powerUp");
+        color("red");
+        particle(player.pos);
+        
+        // Generate particles
+    }
+  const isEat2 = char("a", player.pos).isColliding.char.e;
+    if (isEat2) {
+        addScore(50, player.pos.x, player.pos.y);
         play("powerUp");
         color("red");
         particle(player.pos);
@@ -277,6 +322,15 @@ function update() {
       play("explosion");
       end()
     } 
+  const isHit3 = char("a", player.pos).isColliding.char.f;
+    if (isHit3){
+      play("explosion");
+      end()
+    } 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//SWAP PLACES CODE
+
 
   //check if mouse is within 2 units of enemy
   const difference1 = Math.abs(input.pos.x - enemy.pos.x);
@@ -313,6 +367,23 @@ function update() {
       particle(enemy2.pos);
     }
 
+
+  const difference9 = Math.abs(input.pos.x - enemy3.pos.x);
+  const difference10 = Math.abs(input.pos.y - enemy3.pos.y)
+    //if mouse is clicked on enemy swap places with it
+    if(input.isJustPressed && (difference9 <=6 )&& difference10 <=6){
+      color("yellow");
+      particle(player.pos);
+      temp.pos = player.pos;
+      player.pos = temp2.pos;
+      temp2.pos = enemy3.pos;
+      enemy3.pos = temp.pos;
+      player.pos = temp2.pos;
+      //temp to hold positions
+      play("laser");
+      color("yellow");
+      particle(enemy3.pos);
+    }
     //check if mouse is within 2 units of onion
   const difference3 = Math.abs(input.pos.x - onion.pos.x);
   const difference4 = Math.abs(input.pos.y - onion.pos.y)
@@ -331,19 +402,22 @@ function update() {
       particle(onion.pos);
     }
 
-    // function moveEnemyLeft(){
-    //   enemy.pos = vec(enemy.pos.x-0.5, enemy.pos.y);
-    // }
-
-    // function moveEnemyRight(){
-    //   enemy.pos = vec(enemy.pos.x+0.5, enemy.pos.y);
-    // }
-    // function moveEnemyUp(){
-    //   enemy.pos = vec(enemy.pos.x,enemy.pos.y-0.5);
-    // }
-    // function moveEnemyDown(){
-    //   enemy.pos = vec(enemy.pos.x,enemy.pos.y+0.5);
-    // }
+  const difference7 = Math.abs(input.pos.x - onion2.pos.x);
+  const difference8 = Math.abs(input.pos.y - onion2.pos.y)
+    //if mouse is clicked on onion swap places with it
+  if(input.isJustPressed && (difference7 <=5 )&& difference8<=5){    
+    color("yellow");
+    particle(player.pos);  
+    temp.pos = player.pos;
+    player.pos = temp2.pos;
+    temp2.pos = onion2.pos
+    onion2.pos = temp.pos;
+    player.pos = temp2.pos;
+    //temp to hold positions
+    play("laser");
+    color("yellow");
+    particle(onion2.pos);
+  }
 
   
     

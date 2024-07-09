@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8" />
     <title>OgreSwap</title>
-    <meta
-      name="viewport"
-      content="width=device-width, height=device-height,
-    user-scalable=no, initial-scale=1, maximum-scale=1"
-    />
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1"/>
     <script src="https://unpkg.com/sounds-some-sounds@3.0.0/build/index.js"></script>
     <script src="https://unpkg.com/gif-capture-canvas@1.1.0/build/index.js"></script>
     <script src="https://unpkg.com/pixi.js@5.3.0/dist/pixi.min.js"></script>
@@ -68,8 +64,8 @@ prprp
 ];
 
 const G = {
-	WIDTH: 100,
-	HEIGHT: 150,
+    WIDTH: 100,
+    HEIGHT: 150,
 };
 
 options = {
@@ -84,230 +80,207 @@ let playerPos;
 let enemy;
 let temp;
 
+function getRandomPosition() {
+    return vec(Math.random() * (G.WIDTH - 3), Math.random() * (G.HEIGHT - 3));
+}
 
-let x = Math.random() * (G.WIDTH-3);
-let y = Math.random() * (G.HEIGHT-3);
 let dx = Math.random() > 0.5 ? 1 : -1; // Random initial direction for dx (1 or -1)
 let dy = Math.random() > 0.5 ? 1 : -1; // Random initial direction for dy (1 or -1)
-
-
-let ex = Math.random() * (G.WIDTH-3);
-let ey = Math.random() * (G.HEIGHT-3);
 let edx = 0.7;
 let edy = 0.7;
-
-let e2x = Math.random() * (G.WIDTH-3);
-let e2y = Math.random() * (G.HEIGHT-3);
 let e2dx = 0.7;
 let e2dy = 0.7;
-
-let e3x = Math.random() * (G.WIDTH-3);
-let e3y = Math.random() * (G.HEIGHT-3);
 let e3dx = 0.7;
 let e3dy = 0.7;
-
-let ox = Math.random() * (G.WIDTH-3);
-let oy = Math.random() * (G.HEIGHT-3);
 let odx = 0.7;
 let ody = 0.7;
-
-let o2x = Math.random() * (G.WIDTH-3);
-let o2y = Math.random() * (G.HEIGHT-3);
 let o2dx = 0.7;
 let o2dy = 0.7;
 
-
 function update() {
-  if (!ticks) {
+    if (!ticks) {
+        player = {
+            pos: getRandomPosition(),
+        };
+        playerPos = vec();
 
-    player = {
-            pos: vec(G.WIDTH * 0.1, G.HEIGHT * 0.5),
-    }
-    playerPos = vec();
+        onion = {
+            pos: getRandomPosition(),
+        };
 
-    onion = {
-            pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.1)
-    }
+        onion2 = {
+            pos: getRandomPosition(),
+        };
 
-    onion2 = {
-            pos: vec(G.WIDTH * 0.2, G.HEIGHT * 0.6)
-    }
+        enemy = {
+            pos: getRandomPosition(),
+        };
 
-    enemy = {
-            pos: vec(G.WIDTH * 0.2, G.HEIGHT * 0.1),
+        enemy2 = {
+            pos: getRandomPosition(),
+        };
 
-    }
+        enemy3 = {
+            pos: getRandomPosition(),
+        };
 
-    enemy2 = {
-            pos: vec(G.WIDTH * 0.9, G.HEIGHT * 0.2),
-    }
+        temp = {
+            pos: vec(G.WIDTH * 5, G.HEIGHT * 5),
+        };
+        temp2 = {
+            pos: vec(G.WIDTH * 5, G.HEIGHT * 5),
+        };
 
-    enemy3 = {
-            pos: vec(G.WIDTH * 0.8, G.HEIGHT * 0.8),
-    }
-
-    temp={
-            pos: vec(G.WIDTH *5, G.HEIGHT *5)
-    }
-    temp2={
-            pos: vec(G.WIDTH *5, G.HEIGHT *5)
-    }
-    color("green");
+        color("green");
         // Generate particles
         particle(
             player.pos.x, // x coordinate
             player.pos.y, // y coordinate
             4, // The number of particles
             1, // The speed of the particles
-            -PI/2, // The emitting angle
-            PI/4  // The emitting width
+            -PI / 2, // The emitting angle
+            PI / 4 // The emitting width
         );
-    
-  }
+    }
 
-  addScore(1);
-  // player.pos = vec(input.pos.x, input.pos.y);
-  player.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  color("black");
-  char("a", player.pos);
+    addScore(1);
+    // player.pos = vec(input.pos.x, input.pos.y);
+    player.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    color("black");
+    char("a", player.pos);
 
-  onion.pos = vec(onion.pos.x, onion.pos.y);
-  onion.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  char("b",onion.pos);
+    onion.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    char("b", onion.pos);
 
-  onion2.pos = vec(onion2.pos.x, onion2.pos.y);
-  onion2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  char("e",onion2.pos);
+    onion2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    char("e", onion2.pos);
 
-  enemy.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  char("c",enemy.pos);
+    enemy.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    char("c", enemy.pos);
 
-  enemy2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  char("d",enemy2.pos);
+    enemy2.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    char("d", enemy2.pos);
 
-  enemy3.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
-  char("f",enemy3.pos);
+    enemy3.pos.clamp(0, G.WIDTH, 0, G.HEIGHT);
+    char("f", enemy3.pos);
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//MOVEMENT
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //MOVEMENT
 
-  if (player.pos.x + dx > G.WIDTH-3 || player.pos.x + dx < 0) {
+    if (player.pos.x + dx > G.WIDTH - 3 || player.pos.x + dx < 0) {
         dx = -dx;
         color("green");
         particle(player.pos);
     }
 
-  if (player.pos.y + dy > G.HEIGHT-3 || player.pos.y + dy < 0) {
-      dy = -dy;
-      color("green");
-      particle(player.pos);
-  }
+    if (player.pos.y + dy > G.HEIGHT - 3 || player.pos.y + dy < 0) {
+        dy = -dy;
+        color("green");
+        particle(player.pos);
+    }
 
-  player.pos.x += dx;
-  player.pos.y += dy;
+    player.pos.x += dx;
+    player.pos.y += dy;
 
-  if (enemy.pos.x + edx > G.WIDTH-3 || enemy.pos.x + edx < 0) {
+    if (enemy.pos.x + edx > G.WIDTH - 3 || enemy.pos.x + edx < 0) {
         edx = -edx;
         color("purple");
         particle(enemy.pos);
     }
 
-  if (enemy.pos.y + edy > G.HEIGHT-3 || enemy.pos.y + edy < 0) {
-      edy = -edy;
-      color("purple");
-      particle(enemy.pos);
-  }
+    if (enemy.pos.y + edy > G.HEIGHT - 3 || enemy.pos.y + edy < 0) {
+        edy = -edy;
+        color("purple");
+        particle(enemy.pos);
+    }
 
-  enemy.pos.x += edx;
-  enemy.pos.y += edy;
+    enemy.pos.x += edx;
+    enemy.pos.y += edy;
 
-  if (enemy2.pos.x + e2dx > G.WIDTH-3 || enemy2.pos.x + e2dx < 0) {
+    if (enemy2.pos.x + e2dx > G.WIDTH - 3 || enemy2.pos.x + e2dx < 0) {
         e2dx = -e2dx;
         color("purple");
         particle(enemy2.pos);
     }
 
-  if (enemy2.pos.y + e2dy > G.HEIGHT-3 || enemy2.pos.y + e2dy < 0) {
-      e2dy = -e2dy;
-      color("purple");
-      particle(enemy2.pos);
-  }
+    if (enemy2.pos.y + e2dy > G.HEIGHT - 3 || enemy2.pos.y + e2dy < 0) {
+        e2dy = -e2dy;
+        color("purple");
+        particle(enemy2.pos);
+    }
 
-  enemy2.pos.x += e2dx;
-  enemy2.pos.y += e2dy;
+    enemy2.pos.x += e2dx;
+    enemy2.pos.y += e2dy;
 
-  if (enemy3.pos.x + e3dx > G.WIDTH-3 || enemy3.pos.x + e3dx < 0) {
+    if (enemy3.pos.x + e3dx > G.WIDTH - 3 || enemy3.pos.x + e3dx < 0) {
         e3dx = -e3dx;
         color("purple");
         particle(enemy2.pos);
     }
 
-  if (enemy3.pos.y + e3dy > G.HEIGHT-3 || enemy3.pos.y + e3dy < 0) {
-      e3dy = -e3dy;
-      color("purple");
-      particle(enemy3.pos);
-  }
+    if (enemy3.pos.y + e3dy > G.HEIGHT - 3 || enemy3.pos.y + e3dy < 0) {
+        e3dy = -e3dy;
+        color("purple");
+        particle(enemy3.pos);
+    }
 
-  enemy3.pos.x += e3dx;
-  enemy3.pos.y += e3dy;
+    enemy3.pos.x += e3dx;
+    enemy3.pos.y += e3dy;
 
-  if (onion.pos.x + odx > G.WIDTH-3 || onion.pos.x + odx < 0) {
+    if (onion.pos.x + odx > G.WIDTH - 3 || onion.pos.x + odx < 0) {
         odx = -odx;
         color("blue");
         particle(onion.pos);
-  }
+    }
 
-  if (onion.pos.y + ody > G.HEIGHT-3 ||onion.pos.y + ody < 0) {
-      ody = -ody;
-      color("blue");
-      particle(onion.pos);
-  }
+    if (onion.pos.y + ody > G.HEIGHT - 3 || onion.pos.y + ody < 0) {
+        ody = -ody;
+        color("blue");
+        particle(onion.pos);
+    }
 
-  onion.pos.x += odx;
-  onion.pos.y += ody;
+    onion.pos.x += odx;
+    onion.pos.y += ody;
 
-  if (onion2.pos.x + o2dx > G.WIDTH-3 || onion2.pos.x + o2dx < 0) {
+    if (onion2.pos.x + o2dx > G.WIDTH - 3 || onion2.pos.x + o2dx < 0) {
         o2dx = -o2dx;
         color("blue");
         particle(onion2.pos);
-  }
+    }
 
-  if (onion2.pos.y + o2dy > G.HEIGHT-3 ||onion2.pos.y + o2dy < 0) {
-      o2dy = -o2dy;
-      color("blue");
-      particle(onion2.pos);
-  }
+    if (onion2.pos.y + o2dy > G.HEIGHT - 3 || onion2.pos.y + o2dy < 0) {
+        o2dy = -o2dy;
+        color("blue");
+        particle(onion2.pos);
+    }
 
-  onion2.pos.x += o2dx;
-  onion2.pos.y += o2dy;
+    onion2.pos.x += o2dx;
+    onion2.pos.y += o2dy;
 
+    temp.pos = vec(temp.pos.x, temp.pos.y);
+    temp2.pos = vec(temp.pos.x, temp.pos.y);
+    temp.pos = vec(temp.pos.x, temp.pos.y);
+    temp2.pos = vec(temp.pos.x, temp.pos.y);
 
-  temp.pos = vec(temp.pos.x, temp.pos.y);
-  temp2.pos = vec(temp.pos.x, temp.pos.y);
-  temp.pos = vec(temp.pos.x, temp.pos.y);
-  temp2.pos = vec(temp.pos.x, temp.pos.y);
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//COLLISION
-  //if player touches onion, addscore
-  const isEat = char("a", player.pos).isColliding.char.b;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //COLLISION
+    //if player touches onion, addscore
+    const isEat = char("a", player.pos).isColliding.char.b;
     if (isEat) {
         addScore(50, player.pos.x, player.pos.y);
         play("powerUp");
         color("red");
         particle(player.pos);
-        
+
         // Generate particles
     }
-  const isEat2 = char("a", player.pos).isColliding.char.e;
+    const isEat2 = char("a", player.pos).isColliding.char.e;
     if (isEat2) {
         addScore(50, player.pos.x, player.pos.y);
         play("powerUp");
         color("red");
         particle(player.pos);
-        
+
         // Generate particles
     }
   
